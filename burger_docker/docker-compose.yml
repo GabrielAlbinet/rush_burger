@@ -12,6 +12,18 @@ services:
     volumes:
       - burger_db_data:/var/lib/postgresql/data
 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5433:80"
+    volumes:
+      - burger_pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+
   back:
     build:
       context: ../burger_back
@@ -46,3 +58,4 @@ services:
 
 volumes:
   burger_db_data:
+  burger_pgadmin_data:
