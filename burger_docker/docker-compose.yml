@@ -1,0 +1,48 @@
+name: burger_rush
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - burger_db_data:/var/lib/postgresql/data
+
+  back:
+    build:
+      context: ../burger_back
+      dockerfile: ../burger_docker/back.Dockerfile
+    environment:
+      PORT: 3000
+      FRONT_URL: http://localhost:4200
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_NAME: ${POSTGRES_DB}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../burger_back:/app
+      - /app/node_modules
+    depends_on:
+      - db
+
+  front:
+    build:
+      context: ../burger_front
+      dockerfile: ../burger_docker/front.Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ../burger_front:/app
+      - /app/node_modules
+    depends_on:
+      - back
+
+volumes:
+  burger_db_data:
