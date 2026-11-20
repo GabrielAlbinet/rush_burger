@@ -7,6 +7,7 @@ import { Burger } from './burgers/burger.entity.js';
 import { GamePlayer } from './games/game-player.entity.js';
 import { Game } from './games/game.entity.js';
 import { Ingredient } from './ingredients/ingredient.entity.js';
+import { IngredientsModule } from './ingredients/ingredients.module.js';
 import { Player } from './players/player.entity.js';
 import { Submission } from './submissions/submission.entity.js';
 
@@ -26,6 +27,7 @@ import { Submission } from './submissions/submission.entity.js';
         synchronize: true,
       }),
     }),
+    IngredientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
